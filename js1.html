@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Age Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .center {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="date"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p#result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+    <script>
+        function calculateAge() {
+            var birthDate = document.getElementById('birthdate').value;
+            if (birthDate === "") {
+                document.getElementById('result').innerHTML = "Please enter a valid date.";
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "calculate_age.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById('result').innerHTML = xhr.responseText;
+                }
+            };
+            xhr.send("birthdate=" + encodeURIComponent(birthDate));
+        }
+    </script>
+</head>
+<body>
+    <div class="center">
+        <h1>Age Calculator</h1>
+        <hr>
+        <label for="birthdate">Enter Your DOB:</label>
+        <input type="date" id="birthdate">
+        <button onclick="calculateAge()">Calculate Age</button>
+        <hr>
+        <p id="result"></p>
+    </div>
+</body>
+</html>
+
+
