@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Age Calculator</title>
     <style>
         body {
@@ -52,6 +54,17 @@
             font-size: 18px;
         }
     </style>
+</head>
+<body>
+    <div class="center">
+        <h1>Age Calculator</h1>
+        <hr>
+        <label for="birthdate">Enter Your Date of Birth:</label>
+        <input type="date" id="birthdate">
+        <button onclick="calculateAge()">Calculate Age</button>
+        <hr>
+        <p id="result"></p>
+    </div>
     <script>
         function calculateAge() {
             var birthDate = document.getElementById('birthdate').value;
@@ -60,29 +73,18 @@
                 return;
             }
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "calculate_age.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    document.getElementById('result').innerHTML = xhr.responseText;
-                }
-            };
-            xhr.send("birthdate=" + encodeURIComponent(birthDate));
+            var birthDateObj = new Date(birthDate);
+            var today = new Date();
+            var age = today.getFullYear() - birthDateObj.getFullYear();
+            var monthDifference = today.getMonth() - birthDateObj.getMonth();
+            var dayDifference = today.getDate() - birthDateObj.getDate();
+
+            if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+                age--;
+            }
+
+            document.getElementById('result').innerHTML = "Your age is " + age + " years.";
         }
     </script>
-</head>
-<body>
-    <div class="center">
-        <h1>Age Calculator</h1>
-        <hr>
-        <label for="birthdate">Enter Your DOB:</label>
-        <input type="date" id="birthdate">
-        <button onclick="calculateAge()">Calculate Age</button>
-        <hr>
-        <p id="result"></p>
-    </div>
 </body>
 </html>
-
-
